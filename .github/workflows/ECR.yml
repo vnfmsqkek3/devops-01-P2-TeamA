@@ -27,7 +27,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: team-a
-          IMAGE_TAG: ${{ steps.meta.outputs.tags }}
+          IMAGE_TAG: team-a/docker-build-mini-server:v1.0.0
           
         run: |
           docker buildx build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
