@@ -1,9 +1,8 @@
 name: Build and Push Docker Image
 on:
-  release:
-    types: [published]
-    tags : 
-      -'v*'
+  push:
+    branches:
+      - main
       
 jobs:
   build-and-push-image:
