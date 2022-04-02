@@ -30,16 +30,23 @@ on:
   push:
     branches:
       - main
-      - feat3
 
 env:
-  AWS_REGION: ap-northest-2                  # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ap-northeast-2                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: team-a           # set this to your Amazon ECR repository name
+<<<<<<< HEAD
   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
   ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: .aws/task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
+=======
+  ECS_SERVICE: mongo-service                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: team-a-cluster                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: fin-task-v1:1 # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: mongo-cont           # set this to the name of the container in the
+>>>>>>> 210b20c1ed369d4402cfed9a7b28cfaedbc4a3c0
                                                # containerDefinitions section of your task definition
 
 jobs:
