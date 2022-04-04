@@ -1,38 +1,38 @@
-name: master
-
 on:
+  pull_request:
   push:
     branches:
-      - main    # master 브랜치에서 push 이벤트가 일어났을 때 실행
-
+      - main
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@master
-
-      - name: Cache node modules  # node modules 캐싱
-        uses: actions/cache@v1
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-master-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
-
-      - name: Install Dependencies
-        run: yarn
-
-      - name: Build
-        run: npm install, yarn build
-
-      - name: Deploy
+          node-version: ${{ matrix.node-version }}
+      - name: Yarn Install
+        run: |
+          yarn install
+      - name: Production Build
+        run: |
+          yarn build
+      - name: Unit Tests
+        run: |
+          yarn test
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --delete
         env:
+          AWS_S3_BUCKET: jaehyeok-bucket
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp \
-            --recursive \
-            --region ap-northeast-2 \
-            dist s3://jaehyeok-bucket
+          AWS_REGION: ap-northeast-2
+          SOURCE_DIR: "build"
